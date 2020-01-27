@@ -22,6 +22,8 @@ class GUI:
         rightFrame = tk.Frame(parentFrame, bg="#202020")
         rightFrame.pack(side=tk.RIGHT, fill=tk.BOTH, padx=2, pady=2)
 
+        tk.Button(leftFrame, text="QUIT", width=100, height=100, command=self.win.quit).pack(side=tk.LEFT)
+
         # ----- Control Panel Setup -----
 
         controlPanel = tk.Frame(rightFrame, bg="#404040")
@@ -73,6 +75,7 @@ class GUI:
         #tk.Scale(self.win).pack()
 
         self.win.mainloop()
+
 
     def xSlideChange(self, val):
         print("HELLO" + val)

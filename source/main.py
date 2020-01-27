@@ -21,7 +21,7 @@ def main():
     # Ask For User Confrimation
 
     # Start Print
-    cnc = CNC.CNC(0, 0, 0, 0, 0, 0, 0)
+    cnc = CNC.CNC(0, 0, 0, 0, 0, 0, 21)
 
     gui = GUI.GUI(cnc)
     #cnc.startDrill(.5, .5)
