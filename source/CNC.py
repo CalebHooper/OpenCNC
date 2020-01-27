@@ -20,6 +20,12 @@ class DrillThread (threading.Thread):
 
         self.DRILL_STATUS = True
 
+    def mySleep(self, dur):
+
+        if dur > 0 and dur <= 10:
+            time.sleep(dur)
+
+
     def run(self):
 
 
@@ -31,7 +37,9 @@ class DrillThread (threading.Thread):
             except:
                 print("ERROR: NOT A RASPBERRY PI")
 
-            time.sleep(float(self.CYCLE_LENGTH) * float(self.PWM))
+            print("DRILLING!! " + str(float(self.CYCLE_LENGTH)) + " | " + str(float(self.PWM)))
+            self.mySleep(float(self.CYCLE_LENGTH) * (float(self.PWM)))
+
 
             # Turn drill off
             try:
@@ -39,8 +47,8 @@ class DrillThread (threading.Thread):
             except:
                 print("ERROR: NOT A RASPBERRY PI")
 
-            print("DRILLING!! " + str(float(self.CYCLE_LENGTH)) + str(float(self.PWM)))
-            time.sleep(float(self.CYCLE_LENGTH) * (1 - float(self.PWM)))
+            print("DRILLING!! " + str(float(self.CYCLE_LENGTH)) + " | " +  str(float(self.PWM)))
+            self.mySleep(float(self.CYCLE_LENGTH) * (1 - float(self.PWM)))
 
         print("DRILL HAS STOPPED")
 
