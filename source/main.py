@@ -22,9 +22,10 @@ def main():
 
     # Start Print
     cnc = CNC.CNC(0, 0, 0, 0, 0, 0, 21)
+    cnc.startDrill(.5, .5)
 
     gui = GUI.GUI(cnc)
-    #cnc.startDrill(.5, .5)
+    #
     #time.sleep(3)
     #cnc.stopDrilling()
 
