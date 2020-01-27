@@ -119,7 +119,7 @@ class CNC():
         except:
             print("No Drill Running")
         else:
-            self.drillThread.PWM = cycle
+            self.drillThread.CYCLE_LENGTH = cycle
 
 
     def stopDrilling(self):
