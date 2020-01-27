@@ -46,7 +46,7 @@ class DrillThread (threading.Thread):
 
 
 
-class CNC:
+class CNC():
 
     def __init__(self, X_MOTOR_1, X_MOTOR_2, Y_MOTOR_1, Y_MOTOR_2, Z_MOTOR_1, Z_MOTOR_2, DRILL_PIN):
 
@@ -97,7 +97,7 @@ class CNC:
             self.drillThread.start()
 
     def updateDrillPWM(self, pwm):
-
+        return
         try:
             self.drillThread
         except:
@@ -107,6 +107,7 @@ class CNC:
 
 
     def updateDrillCycle(self, cycle):
+        return
         try:
             self.drillThread
         except:
@@ -116,7 +117,7 @@ class CNC:
 
 
     def stopDrilling(self):
-
+        return
         try:
             self.drillThread
         except:

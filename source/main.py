@@ -28,6 +28,9 @@ def main():
     #time.sleep(3)
     #cnc.stopDrilling()
 
+    while True:
+        i = 0
+
     
 
 if __name__ == "__main__":

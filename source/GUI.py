@@ -1,6 +1,7 @@
 import tkinter as tk
+import threading
 
-class GUI:
+class GUI():
 
     def __init__(self, cnc):
 
@@ -10,6 +11,12 @@ class GUI:
         self.win.title("CNC User Interface")
 
         self.cnc = cnc
+
+        self.run()
+
+
+
+    def run(self):
 
         # --- Base Setup -----
 
