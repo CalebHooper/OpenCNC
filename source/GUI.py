@@ -94,7 +94,7 @@ class GUI():
         print("HELLO" + val)
 
     def drillCycleChange(self, val):
-        self.cnc.updateDrillPWM(val)
+        self.cnc.updateDrillCycle(val)
 
     def drillPulseChange(self, val):
-        self.cnc.updateDrillCycle(val)
+        self.cnc.updateDrillPWM(val)
