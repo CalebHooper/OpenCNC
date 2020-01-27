@@ -7,7 +7,7 @@ class GUI():
 
         self.win = tk.Tk()
         self.win.minsize(600, 500)
-        self.win.attributes("-fullscreen", True)
+        #self.win.attributes("-fullscreen", True)
         self.win.title("CNC User Interface")
 
         self.cnc = cnc
