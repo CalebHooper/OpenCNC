@@ -37,7 +37,7 @@ class DrillThread (threading.Thread):
             except:
                 print("ERROR: NOT A RASPBERRY PI")
 
-            print("DRILLING!! " + str(float(self.CYCLE_LENGTH)) + " | " + str(float(self.PWM)))
+            print("DRILLING!! " + str(float(self.CYCLE_LENGTH) * (float(self.PWM))))
             self.mySleep(float(self.CYCLE_LENGTH) * (float(self.PWM)))
 
 
@@ -47,7 +47,7 @@ class DrillThread (threading.Thread):
             except:
                 print("ERROR: NOT A RASPBERRY PI")
 
-            print("DRILLING!! " + str(float(self.CYCLE_LENGTH)) + " | " +  str(float(self.PWM)))
+            print("DRILLING!! " + str(float(self.CYCLE_LENGTH) * (1 - float(self.PWM))))
             self.mySleep(float(self.CYCLE_LENGTH) * (1 - float(self.PWM)))
 
         print("DRILL HAS STOPPED")
