@@ -81,14 +81,14 @@ class CNC():
 
         # Setup Raspberry Pi pins
         try:
-            GPIO.setup(self.MOTOR_X1, GPIO.OUT)
-            GPIO.setup(self.MOTOR_X2, GPIO.OUT)
+            #GPIO.setup(self.MOTOR_X1, GPIO.OUT)
+            #GPIO.setup(self.MOTOR_X2, GPIO.OUT)
 
-            GPIO.setup(self.MOTOR_Y1, GPIO.OUT)
-            GPIO.setup(self.MOTOR_Y2, GPIO.OUT)
+            #GPIO.setup(self.MOTOR_Y1, GPIO.OUT)
+            #GPIO.setup(self.MOTOR_Y2, GPIO.OUT)
 
-            GPIO.setup(self.MOTOR_Z1, GPIO.OUT)
-            GPIO.setup(self.MOTOR_Z2, GPIO.OUT)
+            #GPIO.setup(self.MOTOR_Z1, GPIO.OUT)
+            #GPIO.setup(self.MOTOR_Z2, GPIO.OUT)
 
             GPIO.setup(self.DRILL_PIN, GPIO.OUT)
         except:
