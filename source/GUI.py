@@ -219,13 +219,13 @@ class GUI():
             self.addLogMessage("ERROR: No file selected.")
 
     def xSlideChange(self, val):
-        print("HELLO" + val)
+        print(val)
 
     def ySlideChange(self, val):
-        print("HELLO" + val)
+        print(val)
 
     def zSlideChange(self, val):
-        print("HELLO" + val)
+        print(val)
 
     def drillCycleChange(self, val):
         self.cnc.updateDrillCycle(val)

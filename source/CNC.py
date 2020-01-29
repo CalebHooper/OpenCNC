@@ -7,7 +7,7 @@ try:
     import RPi.GPIO as GPIO
 
 except:
-    print("ERROR: NOT A RASPBERRY PI")
+    print("ERROR: Can't RPi wither not avaible or device is not a raspberry pi.")
 
 class DrillThread (threading.Thread):
 
