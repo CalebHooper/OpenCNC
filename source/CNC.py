@@ -58,7 +58,7 @@ class CNC():
             GPIO.setmode(GPIO.BCM)
             GPIO.setwarnings(False)
         except:
-            print("ERROR: NOT A RASPBERRY PI")
+            print("ERROR: Can not set mode device may not me a raspberry Pi")
 
         # Save values
         self.TABLE_HEIGHT = TABLE_HEIGHT
@@ -92,7 +92,7 @@ class CNC():
 
             GPIO.setup(self.DRILL_PIN, GPIO.OUT)
         except:
-            print("ERROR: NOT A RASPBERRY PI")
+            print("ERROR: Can not set input output pins device may not be a Raspberry Pi")
 
     def startDrill(self, PWM_RATIO, CYCLE_LENGTH):
 
