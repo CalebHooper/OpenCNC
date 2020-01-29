@@ -1,6 +1,7 @@
 import threading
 import time
 import ctypes
+import GUI
 
 try:
     import RPi.GPIO as GPIO
@@ -37,7 +38,6 @@ class DrillThread (threading.Thread):
             except:
                 print("ERROR: NOT A RASPBERRY PI")
 
-            print("DRILLING!! " + str(float(self.CYCLE_LENGTH) * (float(self.PWM))) + " | " + str(self.CYCLE_LENGTH) + " || " + str(self.PWM) )
             self.mySleep(float(self.CYCLE_LENGTH) * (float(self.PWM)))
 
 
@@ -47,16 +47,11 @@ class DrillThread (threading.Thread):
             except:
                 print("ERROR: NOT A RASPBERRY PI")
 
-            print("DRILLING!! " + str(float(self.CYCLE_LENGTH) * (1.0 - float(self.PWM))) + " | " + str(self.CYCLE_LENGTH) + " || " + str(self.PWM) )
             self.mySleep(float(self.CYCLE_LENGTH) * (1.0 - float(self.PWM)))
-
-        print("DRILL HAS STOPPED")
-
-
 
 class CNC():
 
-    def __init__(self, X_MOTOR_1, X_MOTOR_2, Y_MOTOR_1, Y_MOTOR_2, Z_MOTOR_1, Z_MOTOR_2, DRILL_PIN):
+    def __init__(self, X_MOTOR_1, X_MOTOR_2, X_DIR, Y_MOTOR_1, Y_MOTOR_2, Y_DIR, Z_MOTOR_1, Z_MOTOR_2, Z_DIR, DRILL_PIN, TABLE_WIDTH, TABLE_HEIGHT, TABLE_UNITS):
 
         # Init pi output
         try:
@@ -66,17 +61,25 @@ class CNC():
             print("ERROR: NOT A RASPBERRY PI")
 
         # Save values
-        self.MOTOR_X1 = X_MOTOR_1
-        self.MOTOR_X2 = X_MOTOR_2
+        self.TABLE_HEIGHT = TABLE_HEIGHT
+        self.TABLE_WIDTH = TABLE_WIDTH
+        self.TABLE_UNITS = TABLE_UNITS
 
-        self.MOTOR_Y1 = Y_MOTOR_1
-        self.MOTOR_Y2 = Y_MOTOR_2
+        self.MOTOR_X1_PIN = X_MOTOR_1
+        self.MOTOR_X2_PIN = X_MOTOR_2
+        self.X_DIR_PIN    = X_DIR
 
-        self.MOTOR_Z1 = Z_MOTOR_1
-        self.MOTOR_Z2 = Z_MOTOR_2
+        self.MOTOR_Y1_PIN = Y_MOTOR_1
+        self.MOTOR_Y2_PIN = Y_MOTOR_2
+        self.Y_DIR_PIN    = Y_DIR
+
+        self.MOTOR_Z1_PIN = Z_MOTOR_1
+        self.MOTOR_Z2_PIN = Z_MOTOR_2
+        self.Z_DIR_PIN    = Z_DIR
 
         self.DRILL_PIN = DRILL_PIN
 
+        # Setup Raspberry Pi pins
         try:
             GPIO.setup(self.MOTOR_X1, GPIO.OUT)
             GPIO.setup(self.MOTOR_X2, GPIO.OUT)
@@ -94,42 +97,55 @@ class CNC():
     def startDrill(self, PWM_RATIO, CYCLE_LENGTH):
 
         # Stop any action the drill may already be doing
-        try:
-            self.drillThread
-        except:
-            self.drillThread = DrillThread(self.DRILL_PIN, PWM_RATIO, CYCLE_LENGTH)
-            self.drillThread.start()
-        else:
+        if hasattr(self, 'drillThread'):
             self.drillThread.DRILL_STATUS = False
             self.drillThread = DrillThread(self.DRILL_PIN, PWM_RATIO, CYCLE_LENGTH)
             self.drillThread.start()
+        else:
+            self.drillThread = DrillThread(self.DRILL_PIN, PWM_RATIO, CYCLE_LENGTH)
+            self.drillThread.start()
+
+        self.logMessage("UPDATE: Drill has started.")
 
     def updateDrillPWM(self, pwm):
-        try:
-            self.drillThread
-        except:
-            print("No Drill Running")
-        else:
-            self.drillThread.PWM = pwm
 
+        if hasattr(self, 'drillThread'):
+            self.drillThread.PWM = pwm
+        else:
+            self.logMessage("WARNING: Can't update drill PWM no drill running.")
 
     def updateDrillCycle(self, cycle):
-        try:
-            self.drillThread
-        except:
-            print("No Drill Running")
-        else:
-            self.drillThread.CYCLE_LENGTH = cycle
 
+        if hasattr(self, 'drillThread'):
+            self.drillThread.CYCLE_LENGTH = cycle
+        else:
+            self.logMessage("WARNING: Can't update drill cycle no drill running.")
 
     def stopDrilling(self):
-        try:
-            self.drillThread
-        except:
-            print("NO DRILL RUNNING")
-        else:
+
+        if hasattr(self, 'drillThread'):
             self.drillThread.DRILL_STATUS = False
             del self.drillThread
+            self.logMessage("UPDATE: Drill is stopping...")
+        else:
+            self.logMessage("WARNING: Can't stop drill no drill currently running.")
+
+    def clean(self):
+
+        # Kill The Drill Thread If Currently Running
+        if hasattr(self, 'drillThread'):
+            self.drillThread.DRILL_STATUS = False
+            del self.drillThread
+
+    def logMessage(self, mes):
+
+        print(mes)
+
+        if hasattr(self, 'gui'):
+            self.gui.addLogMessage(mes)
+
+
+
 
 
         
