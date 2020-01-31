@@ -160,6 +160,8 @@ class GUI():
 
         right = tk.Button(midLevel, width=3, text="X+", bg="#A09090", highlightbackground="#C03030", activebackground="#502020")
         right.pack(side=tk.RIGHT, padx=10)
+        right.bind("<Button-1>", self.startXMotorCounterClock)
+        right.bind("<ButtonRelease-1>", self.stopXMotor)
 
         down = tk.Button(bottomLevel, width=3, text="Y-", bg="#90A090", highlightbackground="#30C030", activebackground="#205020")
         down.pack(side=tk.BOTTOM)
