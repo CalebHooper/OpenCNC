@@ -242,7 +242,7 @@ class GUI():
 
 
     def startXMotorClock(self, e):
-        self.cnc.X_THREAD.setDir(0)
+        self.cnc.X_THREAD.setDir(1)
         self.cnc.X_THREAD.startMotor(self.xDirSlider.get())
         self.addLogMessage("Update: Starting X Motor Clockwise")
 
