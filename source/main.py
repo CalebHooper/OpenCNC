@@ -17,8 +17,8 @@ CNC_UNITS = DXF.INCHES
 X_MOTORS   = 20
 X_DIR       = 21
 
-Y_MOTORS   = 25
-Y_DIR       = 7
+Y_MOTORS   = 23
+Y_DIR       = 24
 
 Z_MOTORS   = 27
 Z_DIR       = 22
