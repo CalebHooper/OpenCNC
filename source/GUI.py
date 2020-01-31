@@ -15,7 +15,7 @@ class GUI():
         self.cnc = cnc
 
         # Construct GUI
-        self.run()
+        self.construct()
 
         # Tell The cnc of the GUI so it can interact with it as well.
         self.cnc.gui = self
@@ -24,13 +24,13 @@ class GUI():
         self.win.mainloop()
 
 
-    def run(self):
+    def construct(self):
 
         # ----- Init Image Assets -----
 
-        self.PAUSE_ICON = tk.PhotoImage(file='./assets/Pause.png')
-        self.CANCEL_ICON = tk.PhotoImage(file='./assets/Cancel.png')
-        self.PLAY_ICON = tk.PhotoImage(file='./assets/Play.png')
+        self.pauseIcon  = tk.PhotoImage(file='./assets/Pause.png')
+        self.cancelIcon = tk.PhotoImage(file='./assets/Cancel.png')
+        self.playIcon   = tk.PhotoImage(file='./assets/Play.png')
 
         # --- Base Setup -----
 
@@ -56,7 +56,7 @@ class GUI():
         slide4 = tk.Frame(rightFrame, bg="#808080")
         slide4.pack(side=tk.LEFT, fill=tk.BOTH, padx= 5, pady=5, expand=True)
 
-        self.xDirSlider = tk.Scale(slide1, length = 207, from_=500, to=20, resolution=20, command=self.xSlideChange, bg="#A09090", fg="black", highlightbackground="#C03030", troughcolor="#502020")
+        self.xDirSlider = tk.Scale(slide1, length = 207, from_=500, to=20, resolution=20, bg="#A09090", fg="black", highlightbackground="#C03030", troughcolor="#502020")
         self.xDirSlider.pack(side=tk.TOP, pady=5)
         self.xDirSlider.set(200)
         xSpeedTXT = tk.Text(slide1, bg="#A09090", highlightbackground="#C03030", relief=tk.FLAT)
@@ -64,7 +64,7 @@ class GUI():
         xSpeedTXT.configure(state="disabled", height=1, width=11)
         xSpeedTXT.pack(pady=5, padx=2)
 
-        self.yDirSlider = tk.Scale(slide2, length = 207, from_=500, to=20, resolution=20, command=self.ySlideChange, bg="#90A090", fg="black", highlightbackground="#30C030", troughcolor="#205020")
+        self.yDirSlider = tk.Scale(slide2, length = 207, from_=500, to=20, resolution=20, bg="#90A090", fg="black", highlightbackground="#30C030", troughcolor="#205020")
         self.yDirSlider.pack(side=tk.TOP, pady=5)
         self.yDirSlider.set(200)
         ySpeedTXT = tk.Text(slide2, bg="#90A090", highlightbackground="#30C030", relief=tk.FLAT)
@@ -72,7 +72,7 @@ class GUI():
         ySpeedTXT.configure(state="disabled", height=1, width=11)
         ySpeedTXT.pack(pady=5, padx=2)
 
-        self.zDirSlider = tk.Scale(slide3, length = 207, from_=500, to=20, resolution=20, command=self.zSlideChange, bg="#9090A0", fg="black", highlightbackground="#3030C0", troughcolor="#202050")
+        self.zDirSlider = tk.Scale(slide3, length = 207, from_=500, to=20, resolution=20, bg="#9090A0", fg="black", highlightbackground="#3030C0", troughcolor="#202050")
         self.zDirSlider.pack(side=tk.TOP, pady=5)
         self.zDirSlider.set(200)
         zSpeedTXT = tk.Text(slide3, bg="#9090A0", highlightbackground="#3030C0", relief=tk.FLAT)
@@ -129,15 +129,15 @@ class GUI():
         controlButtonHolder.pack(side=tk.TOP, fill=tk.X, padx=5, pady=(0, 5))
 
         startPrint = tk.Button(controlButtonHolder, height=64, width=64, bg="#606060", highlightbackground="#606060", relief=tk.FLAT, activebackground="#606060")
-        startPrint.config(image=self.PLAY_ICON, pady=3)
+        startPrint.config(image=self.playIcon, pady=3)
         startPrint.pack(side=tk.LEFT, expand=True)
 
         pausePrint = tk.Button(controlButtonHolder, height=64, width=64, bg="#606060", highlightbackground="#606060", relief=tk.FLAT,activebackground="#606060")
-        pausePrint.config(image=self.PAUSE_ICON, pady=3)
+        pausePrint.config(image=self.pauseIcon, pady=3)
         pausePrint.pack(side=tk.LEFT, expand=True)
 
         cancelPrint = tk.Button(controlButtonHolder, height=64, width=64, bg="#606060", highlightbackground="#606060", relief=tk.FLAT, activebackground="#606060")
-        cancelPrint.config(image=self.CANCEL_ICON, pady=3)
+        cancelPrint.config(image=self.cancelIcon, pady=3)
         cancelPrint.pack(side=tk.LEFT, expand=True)
 
         # ----- CNC Move -----
@@ -157,22 +157,22 @@ class GUI():
 
         up = tk.Button(topLevel, width=3, text="Y+", bg="#90A090", highlightbackground="#30C030", activebackground="#205020")
         up.pack(side=tk.TOP)
-        up.bind("<Button-1>", self.startZMotorClock)
-        up.bind("<ButtonRelease-1>", self.stopZMotor)
+        up.bind("<Button-1>", self.startYMotorClock)
+        up.bind("<ButtonRelease-1>", self.stopYMotor)
 
         right = tk.Button(midLevel, width=3, text="X+", bg="#A09090", highlightbackground="#C03030", activebackground="#502020")
         right.pack(side=tk.RIGHT, padx=10)
-        right.bind("<Button-1>", self.startXMotorCounterClock)
+        right.bind("<Button-1>", self.startXMotorClock)
         right.bind("<ButtonRelease-1>", self.stopXMotor)
 
         down = tk.Button(bottomLevel, width=3, text="Y-", bg="#90A090", highlightbackground="#30C030", activebackground="#205020")
         down.pack(side=tk.BOTTOM)
-        down.bind("<Button-1>", self.startZMotorCounterClock)
-        down.bind("<ButtonRelease-1>", self.stopZMotor)
+        down.bind("<Button-1>", self.startYMotorCounterClock)
+        down.bind("<ButtonRelease-1>", self.stopYMotor)
 
         left = tk.Button(midLevel, width=3, text="X-", bg="#A09090", highlightbackground="#C03030", activebackground="#502020")
         left.pack(side=tk.LEFT, padx=10)
-        left.bind("<Button-1>", self.startXMotorClock)
+        left.bind("<Button-1>", self.startXMotorCounterClock)
         left.bind("<ButtonRelease-1>", self.stopXMotor)
 
         zDirHolder= tk.Frame(moverPanel, width=50, height=100, bg="#606060")
@@ -180,9 +180,13 @@ class GUI():
 
         zPlus = tk.Button(zDirHolder,width=3, text="Z+", bg="#9090A0", highlightbackground="#3030C0", activebackground="#202050")
         zPlus.pack(side=tk.TOP, padx=5, pady=5)
+        zPlus.bind("<Button-1>", self.startZMotorClock)
+        zPlus.bind("<ButtonRelease-1>", self.stopZMotor)
 
         zMinus = tk.Button(zDirHolder, width=3, text="Z-", bg="#9090A0", highlightbackground="#3030C0", activebackground="#202050")
         zMinus.pack(side=tk.BOTTOM, padx=5, pady=5)
+        zMinus.bind("<Button-1>", self.startZMotorCounterClock)
+        zMinus.bind("<ButtonRelease-1>", self.stopZMotor)
 
         drillHolder= tk.Frame(moverPanel, width=50, height=100, bg="#606060")
         drillHolder.pack(side=tk.LEFT, expand=True, padx=5, pady=5, fill=tk.Y)
@@ -207,8 +211,6 @@ class GUI():
 
         self.log.see(tk.END)
         
-
-
     def getFile(self):
         self.printFile = filedialog.askopenfilename(initialdir = "/media", title = "Select DXF Print file",filetypes = (("dxf Files","*.DXF"),("all files","*.*")))
 
@@ -226,66 +228,51 @@ class GUI():
         else:
             self.addLogMessage("ERROR: No file selected.")
 
-    def xSlideChange(self, val):
-        print(val)
-
-    def ySlideChange(self, val):
-        print(val)
-
-    def zSlideChange(self, val):
-        print(val)
-
     def drillCycleChange(self, val):
-        self.cnc.updateDrillCycle(val)
+        self.cnc.updateDrillSettings(val, val)
 
     def drillPulseChange(self, val):
-        self.cnc.updateDrillPWM(val)
+        self.cnc.updateDrillSettings(val, val)
 
     def startDrill(self):
         self.cnc.startDrill(self.pwmDrill.get(), self.cycle.get())
 
 
     def startXMotorClock(self, e):
-        self.cnc.X_THREAD.setDir(1)
-        self.cnc.X_THREAD.startMotor(self.xDirSlider.get())
-        self.addLogMessage("Update: Starting X Motor Clockwise")
+        self.cnc.startMotor("X", self.xDirSlider.get(), 1)
+        self.addLogMessage("Update: Starting X+ Motor Clockwise")
 
     def stopXMotor(self, e):
-        self.cnc.X_THREAD.stopMotor()
+        self.cnc.stopMotor("X")
         self.addLogMessage("Update: Stopping X Motor")
 
     def startXMotorCounterClock(self, e):
-        self.cnc.X_THREAD.setDir(0)
-        self.cnc.X_THREAD.startMotor(self.xDirSlider.get())
-        self.addLogMessage("Update: Starting X Motor Counter Clockwise")
+        self.cnc.startMotor("X", self.xDirSlider.get(), 0)
+        self.addLogMessage("Update: Starting X- Motor Counter Clockwise")
 
 
     def startYMotorClock(self, e):
-        self.cnc.Y_THREAD.setDir(1)
-        self.cnc.Y_THREAD.startMotor(self.yDirSlider.get())
-        self.addLogMessage("Update: Starting Y Motor Clockwise")
+        self.cnc.startMotor("Y", self.yDirSlider.get(), 1)
+        self.addLogMessage("Update: Starting Y+ Motor Clockwise")
 
     def stopYMotor(self, e):
-        self.cnc.Y_THREAD.stopMotor()
+        self.cnc.stopMotor("Y")
         self.addLogMessage("Update: Stopping Y Motor")
 
     def startYMotorCounterClock(self, e):
-        self.cnc.Y_THREAD.setDir(0)
-        self.cnc.Y_THREAD.startMotor(self.yDirSlider.get())
-        self.addLogMessage("Update: Starting Y Motor Counter Clockwise")
+        self.cnc.startMotor("Y", self.yDirSlider.get(), 0)
+        self.addLogMessage("Update: Starting Y- Motor Counter Clockwise")
 
 
     def startZMotorClock(self, e):
-        self.cnc.Z_THREAD.setDir(1)
-        self.cnc.Z_THREAD.startMotor(self.zDirSlider.get())
-        self.addLogMessage("Update: Starting Z Motor Clockwise")
+        self.cnc.startMotor("Z", self.zDirSlider.get(), 1)
+        self.addLogMessage("Update: Starting Z+ Motor Clockwise")
 
     def stopZMotor(self, e):
-        self.cnc.Z_THREAD.stopMotor()
+        self.cnc.stopMotor("Z")
         self.addLogMessage("Update: Stopping Z Motor")
 
     def startZMotorCounterClock(self, e):
-        self.cnc.Z_THREAD.setDir(0)
-        self.cnc.Z_THREAD.startMotor(self.zDirSlider.get())
-        self.addLogMessage("Update: Starting Z Motor Counter Clockwise")
+        self.cnc.startMotor("Z", self.zDirSlider.get(), 0)
+        self.addLogMessage("Update: Starting Z- Motor Counter Clockwise")
 
