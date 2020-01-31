@@ -20,7 +20,7 @@ X_DIR       = 21
 Y_MOTORS   = 25
 Y_DIR       = 7
 
-Z_MOTORS   = 17
+Z_MOTORS   = 27
 Z_DIR       = 22
 
 DRILL_PIN   = 4
