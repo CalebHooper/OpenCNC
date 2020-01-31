@@ -56,9 +56,9 @@ class GUI():
         slide4 = tk.Frame(rightFrame, bg="#808080")
         slide4.pack(side=tk.LEFT, fill=tk.BOTH, padx= 5, pady=5, expand=True)
 
-        xDirSlider = tk.Scale(slide1, length = 207, from_=500, to=20, resolution=20, command=self.xSlideChange, bg="#A09090", fg="black", highlightbackground="#C03030", troughcolor="#502020")
-        xDirSlider.pack(side=tk.TOP, pady=5)
-        xDirSlider.set(200)
+        self.xDirSlider = tk.Scale(slide1, length = 207, from_=500, to=20, resolution=20, command=self.xSlideChange, bg="#A09090", fg="black", highlightbackground="#C03030", troughcolor="#502020")
+        self.xDirSlider.pack(side=tk.TOP, pady=5)
+        self.xDirSlider.set(200)
         xSpeedTXT = tk.Text(slide1, bg="#A09090", highlightbackground="#C03030", relief=tk.FLAT)
         xSpeedTXT.insert(tk.INSERT, "x-Dir Speed")
         xSpeedTXT.configure(state="disabled", height=1, width=11)
@@ -166,6 +166,8 @@ class GUI():
 
         left = tk.Button(midLevel, width=3, text="X-", bg="#A09090", highlightbackground="#C03030", activebackground="#502020")
         left.pack(side=tk.LEFT, padx=10)
+        left.bind("<Button-1>", self.startXMotorClock)
+        left.bind("<ButtonRelease-1>", self.stopXMotor)
 
         zDirHolder= tk.Frame(moverPanel, width=50, height=100, bg="#606060")
         zDirHolder.pack(side=tk.LEFT, expand=True, padx=(5, 0), pady=5, fill=tk.Y)
@@ -235,4 +237,19 @@ class GUI():
 
     def startDrill(self):
         self.cnc.startDrill(self.pwmDrill.get(), self.cycle.get())
+
+
+    def startXMotorClock(self, e):
+        self.cnc.X_THREAD.setDir(0)
+        self.cnc.X_THREAD.startMotor(self.xDirSlider.get())
+        self.addLogMessage("Update: Starting X Motor Clockwise")
+
+    def stopXMotor(self, e):
+        self.cnc.X_THREAD.stopMotor()
+        self.addLogMessage("Update: Stopping X Motor")
+
+    def startXMotorCounterClock(self, e):
+        self.cnc.X_THREAD.setDir(0)
+        self.cnc.X_THREAD.startMotor(self.xDirSlider.get())
+        self.addLogMessage("Update: Starting X Motor Counter Clockwise")
 

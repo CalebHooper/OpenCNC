@@ -95,9 +95,13 @@ class Drawer(object):
 
 		if e.dxftype() == 'LINE':
 			self.drawLine(e)
+			return
 
 		if e.dxftype() == 'ARC':
 			self.drawArc(e)
+			return
+
+		print("Not supported: " + e.dxftype())
 
 	def drawLine(self, e):
 

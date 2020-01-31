@@ -3,10 +3,13 @@ import time
 import ctypes
 import GUI
 
+IS_RPI = True
+
 try:
     import RPi.GPIO as GPIO
 
 except:
+    IS_RPI = False
     print("ERROR: Can't RPi wither not avaible or device is not a raspberry pi.")
 
 class DrillThread (threading.Thread):
@@ -49,9 +52,79 @@ class DrillThread (threading.Thread):
 
             self.mySleep(float(self.CYCLE_LENGTH) * (1.0 - float(self.PWM)))
 
+class MotorThread(threading.Thread):
+
+    def __init__(self, STEP_PIN, DIR_PIN, SPEED):
+
+        threading.Thread.__init__(self)
+
+        self.STEP_PIN = STEP_PIN
+        self.DIR_PIN = DIR_PIN
+
+        self.DIR = 0
+
+        self.RUNNING = True
+        self.SPINNING = False
+
+        self.SPEED = SPEED
+        self.DELAY = (1/ self.SPEED) / 2
+
+
+
+    def run(self):
+
+        global IS_RPI
+
+        while self.RUNNING:
+            
+            if not self.SPINNING:
+                continue
+
+            if not IS_RPI:
+                continue
+
+            GPIO.output(self.DIR_PIN, self.DIR)
+
+            GPIO.output(self.STEP_PIN, 0)
+            time.sleep(self.DELAY)
+
+            GPIO.output(self.STEP_PIN, 1)
+            time.sleep(self.DELAY)
+
+
+    def startMotor(self, SPEED):
+
+        self.SPEED = SPEED
+        self.DELAY = (1/ self.SPEED) / 2
+        self.SPINNING = True
+
+
+    def stopMotor(self):
+
+        self.SPINNING = False
+
+    def setMotorSpeed(self, SPEED):
+
+        self.SPEED = SPEED
+        self.DELAY = (1/ self.SPEED) / 2
+
+    def setDir(self, DIR):
+        self.DIR = DIR
+
+
+
+
+
+
+
+
+
+
+
+
 class CNC():
 
-    def __init__(self, X_MOTOR_1, X_MOTOR_2, X_DIR, Y_MOTOR_1, Y_MOTOR_2, Y_DIR, Z_MOTOR_1, Z_MOTOR_2, Z_DIR, DRILL_PIN, TABLE_WIDTH, TABLE_HEIGHT, TABLE_UNITS):
+    def __init__(self, X_MOTORS, X_DIR, Y_MOTORS, Y_DIR, Z_MOTORS, Z_DIR, DRILL_PIN, TABLE_WIDTH, TABLE_HEIGHT, TABLE_UNITS):
 
         # Init pi output
         try:
@@ -65,24 +138,21 @@ class CNC():
         self.TABLE_WIDTH = TABLE_WIDTH
         self.TABLE_UNITS = TABLE_UNITS
 
-        self.MOTOR_X1_PIN = X_MOTOR_1
-        self.MOTOR_X2_PIN = X_MOTOR_2
+        self.MOTORX_PIN = X_MOTORS
         self.X_DIR_PIN    = X_DIR
 
-        self.MOTOR_Y1_PIN = Y_MOTOR_1
-        self.MOTOR_Y2_PIN = Y_MOTOR_2
+        self.MOTORY_PIN = Y_MOTORS
         self.Y_DIR_PIN    = Y_DIR
 
-        self.MOTOR_Z1_PIN = Z_MOTOR_1
-        self.MOTOR_Z2_PIN = Z_MOTOR_2
+        self.MOTORZ_PIN = Z_MOTORS
         self.Z_DIR_PIN    = Z_DIR
 
         self.DRILL_PIN = DRILL_PIN
 
         # Setup Raspberry Pi pins
         try:
-            #GPIO.setup(self.MOTOR_X1, GPIO.OUT)
-            #GPIO.setup(self.MOTOR_X2, GPIO.OUT)
+            GPIO.setup(self.MOTORX_PIN, GPIO.OUT)
+            GPIO.setup(self.X_DIR_PIN, GPIO.OUT)
 
             #GPIO.setup(self.MOTOR_Y1, GPIO.OUT)
             #GPIO.setup(self.MOTOR_Y2, GPIO.OUT)
@@ -93,6 +163,10 @@ class CNC():
             GPIO.setup(self.DRILL_PIN, GPIO.OUT)
         except:
             print("ERROR: Can not set input output pins device may not be a Raspberry Pi")
+
+        # Create Motor threads
+        self.X_THREAD = MotorThread(self.MOTORX_PIN, self.X_DIR_PIN, 200)
+        self.X_THREAD.start()
 
     def startDrill(self, PWM_RATIO, CYCLE_LENGTH):
 
@@ -136,6 +210,9 @@ class CNC():
         if hasattr(self, 'drillThread'):
             self.drillThread.DRILL_STATUS = False
             del self.drillThread
+
+        # KILL THE MOTOR THREAD
+        self.X_THREAD.RUNNING = False
 
     def logMessage(self, mes):
 
