@@ -245,6 +245,7 @@ class MotorThread(threading.Thread):
 
     def setMotorSettingsInternal(self, speed, dir):
 
+        GPIO.output(self.dirPin, dir)
         self.delay = (1 / speed) / 2
         self.dir = dir
 
