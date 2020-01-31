@@ -85,24 +85,31 @@ class CNC():
             if hasattr(self, "motorThreadX"):
                 self.motorThreadX.stopMotorInternal()
                 self.motorThreadX = MotorThread(self.stepX, self.dirX, speed, dir)
+                self.motorThreadX.start()
             else:
                 self.motorThreadX = MotorThread(self.stepX, self.dirX, speed, dir)
+                self.motorThreadX.start()
+                self.motorThreadX.start()
 
         elif motor == "Y":
 
             if hasattr(self, "motorThreadY"):
                 self.motorThreadY.stopMotorInternal()
                 self.motorThreadY = MotorThread(self.stepY, self.dirY, speed, dir)
+                self.motorThreadY.start()
             else:
                 self.motorThreadY = MotorThread(self.stepY, self.dirY, speed, dir)
+                self.motorThreadY.start()
 
         elif motor == "Z":
 
             if hasattr(self, "motorThreadZ"):
                 self.motorThreadZ.stopMotorInternal()
                 self.motorThreadZ = MotorThread(self.stepZ, self.dirZ, speed, dir)
+                self.motorThreadZ.start()
             else:
                 self.motorThreadZ = MotorThread(self.stepZ, self.dirZ, speed, dir)
+                self.motorThreadZ.start()
 
         self.logMessage("Update: Motor " + motor + " has been started.")
 
