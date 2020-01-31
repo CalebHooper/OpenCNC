@@ -154,11 +154,11 @@ class CNC():
             GPIO.setup(self.MOTORX_PIN, GPIO.OUT)
             GPIO.setup(self.X_DIR_PIN, GPIO.OUT)
 
-            #GPIO.setup(self.MOTOR_Y1, GPIO.OUT)
-            #GPIO.setup(self.MOTOR_Y2, GPIO.OUT)
+            GPIO.setup(self.MOTORY_PIN, GPIO.OUT)
+            GPIO.setup(self.Y_DIR_PIN, GPIO.OUT)
 
-            #GPIO.setup(self.MOTOR_Z1, GPIO.OUT)
-            #GPIO.setup(self.MOTOR_Z2, GPIO.OUT)
+            GPIO.setup(self.MOTORZ_PIN, GPIO.OUT)
+            GPIO.setup(self.Z_DIR_PIN, GPIO.OUT)
 
             GPIO.setup(self.DRILL_PIN, GPIO.OUT)
         except:
@@ -167,6 +167,12 @@ class CNC():
         # Create Motor threads
         self.X_THREAD = MotorThread(self.MOTORX_PIN, self.X_DIR_PIN, 200)
         self.X_THREAD.start()
+
+        self.Y_THREAD = MotorThread(self.MOTORY_PIN, self.Y_DIR_PIN, 200)
+        self.Y_THREAD.start()
+
+        self.Z_THREAD = MotorThread(self.MOTORZ_PIN, self.Z_DIR_PIN, 200)
+        self.Z_THREAD.start()
 
     def startDrill(self, PWM_RATIO, CYCLE_LENGTH):
 
@@ -213,6 +219,8 @@ class CNC():
 
         # KILL THE MOTOR THREAD
         self.X_THREAD.RUNNING = False
+        self.Y_THREAD.RUNNING = False
+        self.Z_THREAD.RUNNING = False
 
     def logMessage(self, mes):
 

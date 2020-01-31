@@ -64,17 +64,17 @@ class GUI():
         xSpeedTXT.configure(state="disabled", height=1, width=11)
         xSpeedTXT.pack(pady=5, padx=2)
 
-        yDirSlider = tk.Scale(slide2, length = 207, from_=500, to=20, resolution=20, command=self.ySlideChange, bg="#90A090", fg="black", highlightbackground="#30C030", troughcolor="#205020")
-        yDirSlider.pack(side=tk.TOP, pady=5)
-        yDirSlider.set(200)
+        self.yDirSlider = tk.Scale(slide2, length = 207, from_=500, to=20, resolution=20, command=self.ySlideChange, bg="#90A090", fg="black", highlightbackground="#30C030", troughcolor="#205020")
+        self.yDirSlider.pack(side=tk.TOP, pady=5)
+        self.yDirSlider.set(200)
         ySpeedTXT = tk.Text(slide2, bg="#90A090", highlightbackground="#30C030", relief=tk.FLAT)
         ySpeedTXT.insert(tk.INSERT, "y-Dir Speed")
         ySpeedTXT.configure(state="disabled", height=1, width=11)
         ySpeedTXT.pack(pady=5, padx=2)
 
-        zDirSlider = tk.Scale(slide3, length = 207, from_=500, to=20, resolution=20, command=self.zSlideChange, bg="#9090A0", fg="black", highlightbackground="#3030C0", troughcolor="#202050")
-        zDirSlider.pack(side=tk.TOP, pady=5)
-        zDirSlider.set(200)
+        self.zDirSlider = tk.Scale(slide3, length = 207, from_=500, to=20, resolution=20, command=self.zSlideChange, bg="#9090A0", fg="black", highlightbackground="#3030C0", troughcolor="#202050")
+        self.zDirSlider.pack(side=tk.TOP, pady=5)
+        self.zDirSlider.set(200)
         zSpeedTXT = tk.Text(slide3, bg="#9090A0", highlightbackground="#3030C0", relief=tk.FLAT)
         zSpeedTXT.insert(tk.INSERT, "z-Dir Speed")
         zSpeedTXT.configure(state="disabled", height=1, width=11)
@@ -157,6 +157,8 @@ class GUI():
 
         up = tk.Button(topLevel, width=3, text="Y+", bg="#90A090", highlightbackground="#30C030", activebackground="#205020")
         up.pack(side=tk.TOP)
+        up.bind("<Button-1>", self.startZMotorClock)
+        up.bind("<ButtonRelease-1>", self.stopZMotor)
 
         right = tk.Button(midLevel, width=3, text="X+", bg="#A09090", highlightbackground="#C03030", activebackground="#502020")
         right.pack(side=tk.RIGHT, padx=10)
@@ -165,6 +167,8 @@ class GUI():
 
         down = tk.Button(bottomLevel, width=3, text="Y-", bg="#90A090", highlightbackground="#30C030", activebackground="#205020")
         down.pack(side=tk.BOTTOM)
+        down.bind("<Button-1>", self.startZMotorCounterClock)
+        down.bind("<ButtonRelease-1>", self.stopZMotor)
 
         left = tk.Button(midLevel, width=3, text="X-", bg="#A09090", highlightbackground="#C03030", activebackground="#502020")
         left.pack(side=tk.LEFT, padx=10)
@@ -254,4 +258,34 @@ class GUI():
         self.cnc.X_THREAD.setDir(0)
         self.cnc.X_THREAD.startMotor(self.xDirSlider.get())
         self.addLogMessage("Update: Starting X Motor Counter Clockwise")
+
+
+    def startYMotorClock(self, e):
+        self.cnc.Y_THREAD.setDir(1)
+        self.cnc.Y_THREAD.startMotor(self.yDirSlider.get())
+        self.addLogMessage("Update: Starting Y Motor Clockwise")
+
+    def stopYMotor(self, e):
+        self.cnc.Y_THREAD.stopMotor()
+        self.addLogMessage("Update: Stopping Y Motor")
+
+    def startYMotorCounterClock(self, e):
+        self.cnc.Y_THREAD.setDir(0)
+        self.cnc.Y_THREAD.startMotor(self.yDirSlider.get())
+        self.addLogMessage("Update: Starting Y Motor Counter Clockwise")
+
+
+    def startZMotorClock(self, e):
+        self.cnc.Z_THREAD.setDir(1)
+        self.cnc.Z_THREAD.startMotor(self.zDirSlider.get())
+        self.addLogMessage("Update: Starting Z Motor Clockwise")
+
+    def stopZMotor(self, e):
+        self.cnc.Z_THREAD.stopMotor()
+        self.addLogMessage("Update: Stopping Z Motor")
+
+    def startZMotorCounterClock(self, e):
+        self.cnc.Z_THREAD.setDir(0)
+        self.cnc.Z_THREAD.startMotor(self.zDirSlider.get())
+        self.addLogMessage("Update: Starting Z Motor Counter Clockwise")
 
