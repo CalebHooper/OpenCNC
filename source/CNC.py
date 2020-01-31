@@ -167,17 +167,17 @@ class CNC():
 
         # Kill The Drill Thread If Currently Running
         if hasattr(self, 'motorThreadX'):
-            self.motorThreadX.stopMotor()
+            self.motorThreadX.stopMotorInternal()
             del self.motorThreadX
 
         # Kill The Drill Thread If Currently Running
         if hasattr(self, 'motorThreadY'):
-            self.motorThreadY.stopMotor()
+            self.motorThreadY.stopMotorInternal()
             del self.motorThreadY
 
         # Kill The Drill Thread If Currently Running
         if hasattr(self, 'motorThreadZ'):
-            self.motorThreadZ.stopMotor()
+            self.motorThreadZ.stopMotorInternal()
             del self.motorThreadZ
 
 
