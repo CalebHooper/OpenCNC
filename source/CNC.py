@@ -89,7 +89,6 @@ class CNC():
             else:
                 self.motorThreadX = MotorThread(self.stepX, self.dirX, speed, dir)
                 self.motorThreadX.start()
-                self.motorThreadX.start()
 
         elif motor == "Y":
 
@@ -119,16 +118,19 @@ class CNC():
 
             if hasattr(self, "motorThreadX"):
                 self.motorThreadX.stopMotorInternal()
+                del self.motorThreadX
 
         elif motor == "Y":
 
             if hasattr(self, "motorThreadY"):
                 self.motorThreadY.stopMotorInternal()
+                del self.motorThreadY
 
         elif motor == "Z":
 
             if hasattr(self, "motorThreadZ"):
                 self.motorThreadZ.stopMotorInternal()
+                del self.motorThreadZ
 
         self.logMessage("Update: Motor " + motor + " has been stoped.")
 
